@@ -9,7 +9,8 @@ const months = [
 
 class Calendar extends Component {
   state = {
-    openings: []
+    openings: [],
+    month: ''
   }
 
   handleDateClick = (openings) => {
@@ -28,22 +29,22 @@ class Calendar extends Component {
               key={`${months[data[0]]}-${date[0]}`}
               date={date}
               handleClick={this.handleDateClick}
-              />
-          )
+            />)
           })
         }
       </div>
     </div>
   )
 
-  renderOpenings = (data) => (
+  renderOpenings = () => (
     <div className="months">
-      { this.state.openings.map(time => {
-        return (
+      { this.state.openings
+        .sort((a, b)=> a-b)
+        .map(time => (
           <TimeButton
             key={time}
             time={time} />)
-        })
+        )
       }
     </div>
   )
@@ -55,11 +56,10 @@ class Calendar extends Component {
       <div className="columns ">
         <div className="column is-9">
           {
-          Object.entries(data).map((month) => {
-            console.log(month)
-            return this.renderMonth(month)
-          })
-        }
+            Object.entries(data).map((month) => {
+              return this.renderMonth(month)
+            })
+          }
         </div>
         <div className="column is-3">
           {this.renderOpenings()}
