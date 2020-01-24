@@ -8,19 +8,23 @@ import data from './utils/data.json';
 const dataObj = JSON.parse(JSON.stringify(data));
 const calendarData = {}
 const prepCalendar = () => {
-  dataObj.calendar.forEach(time => {
-    const datetime = new Date(time['date_time']);
+  dataObj.calendar.forEach(opening => {
+    const datetime = new Date(opening['date_time']);
     const month = datetime.getMonth();
     const dayOfMonth = datetime.getDate();
+    const timeData = {
+      hour: datetime.getHours(),
+      time: opening['date_time']
+    }
     if(calendarData[month]) {
       if(calendarData[month][dayOfMonth]) {
-        calendarData[month][dayOfMonth].push(datetime.getHours());
+        calendarData[month][dayOfMonth].push(timeData);
       } else {
-        calendarData[month][dayOfMonth] = [datetime.getHours()]
+        calendarData[month][dayOfMonth] = [timeData]
       }
     } else {
       calendarData[month] = {
-        [dayOfMonth]: [datetime.getHours()]
+        [dayOfMonth]: [timeData]
       }
     }
   });
@@ -70,7 +74,7 @@ class App extends Component {
                 <h3>
                   Select Date and Time
                 </h3>
-                <Calendar data={calendarData} />
+                <Calendar data={calendarData} bookings={data.bookings} />
               </div>
               <div className="column is-2" />
             </div>

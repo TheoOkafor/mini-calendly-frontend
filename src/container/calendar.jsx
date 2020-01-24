@@ -39,10 +39,11 @@ class Calendar extends Component {
   renderOpenings = () => (
     <div className="months">
       { this.state.openings
-        .sort((a, b)=> a-b)
+        .sort((a, b)=> a.hour - b.hour)
         .map(time => (
           <TimeButton
-            key={time}
+            bookings={this.props.bookings}
+            key={time.time}
             time={time} />)
         )
       }

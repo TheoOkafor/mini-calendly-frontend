@@ -7,9 +7,15 @@ class TimeButton extends Component {
 
   handleTimeButtonClick = (event) => {
     event.preventDefault();
-    this.setState({
-      showForm: true,
-    })
+    const { bookings, time } = this.props;
+    const isBooked = bookings.find(item => item['date_time'] === time.time);
+    if(isBooked){
+      alert('This slot has been booked');
+    } else {
+      this.setState({
+        showForm: true,
+      })
+    }
   }
 
   renderForm = () => (
@@ -41,7 +47,7 @@ class TimeButton extends Component {
             className="button is-medium is-fullwidth"
             onClick={this.handleTimeButtonClick}
           >
-            {`${time}:00`}
+            {`${time.hour}:00`}
           </button>
         </div>
         {showForm && this.renderForm()}
