@@ -44,7 +44,9 @@ class Calendar extends Component {
           <TimeButton
             bookings={this.props.bookings}
             key={time.time}
-            time={time} />)
+            fetchData={this.props.fetchData}
+            time={time}
+          />)
         )
       }
     </div>

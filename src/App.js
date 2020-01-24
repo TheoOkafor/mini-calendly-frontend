@@ -36,12 +36,18 @@ class App extends Component {
     data: {}
   }
 
-  async componentDidMount() {
+  fetchData = async () => {
     const { data } = await axios.get('http://127.0.0.1:8000/api/mentor/1');
+    this.setState({
+      data
+    })
+  }
+
+  async componentDidMount() {
+    await this.fetchData();
     const calendar = prepCalendar();
     this.setState({
       calendar,
-      data
     })
   }
 
@@ -74,7 +80,11 @@ class App extends Component {
                 <h3>
                   Select Date and Time
                 </h3>
-                <Calendar data={calendarData} bookings={data.bookings} />
+                <Calendar
+                  data={calendarData}
+                  bookings={data.bookings}
+                  fetchData={this.fetchData}
+                 />
               </div>
               <div className="column is-2" />
             </div>

@@ -40,6 +40,7 @@ class TimeButton extends Component {
     this.setState({
       showForm: false,
     })
+    this.props.fetchData();
   }
 
   renderForm = () => (
