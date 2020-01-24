@@ -1,6 +1,7 @@
 # mini-calendly-frontend
 
 A React-based mini version of calendly
+![mini-calendly](https://user-images.githubusercontent.com/31534129/73093337-97e12d00-3ede-11ea-9f0a-c0c867537c23.png)
 
 ## About
 When the calendar is first opened, an API call gets mentor information containing the mentor details, his/her openings and the bookings by his/her mentees.
