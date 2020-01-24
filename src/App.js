@@ -24,15 +24,25 @@ const prepCalendar = () => {
       }
     }
   });
+  return calendarData;
 }
-prepCalendar();
 
 class App extends Component {
-  async componentDidMount() {
-    const data = await axios.get('http://127.0.0.1:8000/api/mentor/1');
-    console.log(data);
+  state = {
+    data: {}
   }
+
+  async componentDidMount() {
+    const { data } = await axios.get('http://127.0.0.1:8000/api/mentor/1');
+    const calendar = prepCalendar();
+    this.setState({
+      calendar,
+      data
+    })
+  }
+
   render(){
+    const { data } = this.state;
     return (
       <div className="App">
         <nav className="navbar" role="navigation" aria-label="main navigation">
@@ -52,11 +62,14 @@ class App extends Component {
             </div>
             <div className="columns">
               <div className="column is-2" >
-                <p>{dataObj.mentor.name}</p>
+                <p>{data.name}</p>
                 <h2>1 hour meeting</h2>
-                <h6>GMT {dataObj.mentor['time_zone']}</h6>
+                <h6>GMT {data['time_zone']}</h6>
               </div>
               <div className="column is-8 card">
+                <h3>
+                  Select Date and Time
+                </h3>
                 <Calendar data={calendarData} />
               </div>
               <div className="column is-2" />
