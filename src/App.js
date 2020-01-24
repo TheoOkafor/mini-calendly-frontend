@@ -3,52 +3,26 @@ import axios from 'axios';
 
 import './App.css'
 import Calendar from './container/calendar';
-import data from './utils/data.json';
-
-const dataObj = JSON.parse(JSON.stringify(data));
-const calendarData = {}
-const prepCalendar = () => {
-  dataObj.calendar.forEach(opening => {
-    const datetime = new Date(opening['date_time']);
-    const month = datetime.getMonth();
-    const dayOfMonth = datetime.getDate();
-    const timeData = {
-      hour: datetime.getHours(),
-      time: opening['date_time']
-    }
-    if(calendarData[month]) {
-      if(calendarData[month][dayOfMonth]) {
-        calendarData[month][dayOfMonth].push(timeData);
-      } else {
-        calendarData[month][dayOfMonth] = [timeData]
-      }
-    } else {
-      calendarData[month] = {
-        [dayOfMonth]: [timeData]
-      }
-    }
-  });
-  return calendarData;
-}
+import prepCalendar from './utils/helpers'
 
 class App extends Component {
   state = {
-    data: {}
+    data: {},
+    calendar: {}
   }
 
   fetchData = async () => {
     const { data } = await axios.get('http://127.0.0.1:8000/api/mentor/1');
+    const prepdCalendar = prepCalendar(data);
+
     this.setState({
-      data
+      data,
+      calendar: prepdCalendar,
     })
   }
 
   async componentDidMount() {
     await this.fetchData();
-    const calendar = prepCalendar();
-    this.setState({
-      calendar,
-    })
   }
 
   render(){
@@ -58,11 +32,6 @@ class App extends Component {
         <nav className="navbar" role="navigation" aria-label="main navigation">
           <div className="navbar-brand">
             <h2 className="">Mini Calendly</h2>
-            <span role="button" className="navbar-burger" aria-label="menu" aria-expanded="false">
-              <span aria-hidden="true"></span>
-              <span aria-hidden="true"></span>
-              <span aria-hidden="true"></span>
-            </span>
           </div>
         </nav>
         <section className="section">
@@ -80,11 +49,11 @@ class App extends Component {
                 <h3>
                   Select Date and Time
                 </h3>
-                <Calendar
-                  data={calendarData}
+                {<Calendar
+                  data={this.state.calendar}
                   bookings={data.bookings}
                   fetchData={this.fetchData}
-                 />
+                 />}
               </div>
               <div className="column is-2" />
             </div>
