@@ -1,4 +1,5 @@
-import React, { Component} from 'react'
+import React, { Component} from 'react';
+import axios from 'axios';
 
 class TimeButton extends Component {
   state = {
@@ -18,18 +19,46 @@ class TimeButton extends Component {
     }
   }
 
+  handleTextInput = (event) => {
+    const {time } = this.props;
+    this.setState({
+      data: {
+        message: event.target.value,
+        'date_time': time.time,
+        'user_id': 1,
+        'mentor_id': 1,
+      }
+    })
+  }
+
+  handleSubmit = async () => {
+    await axios.post(
+      'http://127.0.0.1:8000/api/mentor/1/bookings',
+      this.state.data
+    )
+    alert('You have successfully booked a session');
+    this.setState({
+      showForm: false,
+    })
+  }
+
   renderForm = () => (
     <div className="">
       <form>
         <div className="field">
           <div className="control">
-            <textarea className="textarea" placeholder="Leave a message"></textarea>
+            <textarea
+              className="textarea"
+              placeholder="Leave a message"
+              onInput={this.handleTextInput}
+            />
           </div>
         </div>
         <div className="field">
           <div className="control">
             <button
               className="button is-link"
+              onClick={this.handleSubmit}
               >Book</button>
           </div>
         </div>
