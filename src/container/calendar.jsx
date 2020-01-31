@@ -19,22 +19,25 @@ class Calendar extends Component {
     });
   }
 
-  renderMonth = (data) => (
-    <div className="months" key={`${months[data[0]]}`}>
-      <h3>{months[data[0]]}</h3>
-      <div className="columns is-multiline">
-        { Object.entries(data[1]).map(date => {
-          return (
-            <DateButton
-              key={`${months[data[0]]}-${date[0]}`}
-              date={date}
-              handleClick={this.handleDateClick}
-            />)
-          })
-        }
+  renderMonth = (data) => {
+    const monthIndex = data[0];
+    return (
+      <div className="months" key={`${months[monthIndex]}`}>
+        <h3>{months[monthIndex]}</h3>
+        <div className="columns is-multiline">
+          { Object.entries(data[1]).map(date => {
+            return (
+              <DateButton
+                key={`${months[monthIndex]}-${monthIndex}`}
+                date={date}
+                handleClick={this.handleDateClick}
+              />)
+            })
+          }
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
 
   renderOpenings = () => (
     <div className="months">
